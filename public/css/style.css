@@ -241,3 +241,45 @@ button:hover{
     background:#2d8cff;
 
 }
+
+/* ===========================
+   TABELA COM ROLAGEM
+=========================== */
+
+.tabela-container{
+
+    max-height:420px;
+
+    overflow-y:auto;
+
+    border:1px solid #2088ff;
+
+    border-radius:15px;
+
+    box-shadow:0 0 20px rgba(0,120,255,.25);
+
+}
+
+.tabela-container table{
+
+    width:100%;
+
+    border:none;
+
+    box-shadow:none;
+
+    margin:0;
+
+}
+
+.tabela-container thead th{
+
+    position:sticky;
+
+    top:0;
+
+    background:#151a24;
+
+    z-index:100;
+
+}

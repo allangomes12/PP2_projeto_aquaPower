@@ -5,11 +5,15 @@
     <nav class="abas">
 
         <a href="/eletrodomesticos" class="ativa">
+
             Equipamentos
+
         </a>
 
         <a href="/equipamentos-ocultos">
+
             Equipamentos Ocultos
+
         </a>
 
     </nav>
@@ -23,65 +27,71 @@
         <h2>Equipamentos</h2>
 
         <p>
+
             Consulte o consumo médio de água e energia dos principais eletrodomésticos.
+
         </p>
 
     </section>
 
-    <table>
+    <div class="tabela-container">
 
-        <thead>
+        <table>
 
-            <tr>
+            <thead>
 
-                <th>Equipamento</th>
+                <tr>
 
-                <th>Categoria</th>
+                    <th>Equipamento</th>
 
-                <th>Energia</th>
+                    <th>Categoria</th>
 
-                <th>Água</th>
+                    <th>Energia</th>
 
-                <th>Ação</th>
+                    <th>Água</th>
 
-            </tr>
+                    <th>Ação</th>
 
-        </thead>
+                </tr>
 
-        <tbody>
+            </thead>
 
-            {{#each equipamentos}}
+            <tbody>
 
-            <tr>
+                {{#each equipamentos}}
 
-                <td>{{nome}}</td>
+                <tr>
 
-                <td>{{categoria}}</td>
+                    <td>{{nome}}</td>
 
-                <td>{{consumoEnergia}} kWh/mês</td>
+                    <td>{{categoria}}</td>
 
-                <td>{{consumoAgua}} L/mês</td>
+                    <td>{{consumoEnergia}} kWh/mês</td>
 
-                <td>
+                    <td>{{consumoAgua}} L/mês</td>
 
-                    <form action="/ocultar/{{id}}" method="POST">
+                    <td>
 
-                        <button class="ocultar">
+                        <form action="/ocultar/{{id}}" method="POST">
 
-                            Ocultar
+                            <button class="ocultar">
 
-                        </button>
+                                Ocultar
 
-                    </form>
+                            </button>
 
-                </td>
+                        </form>
 
-            </tr>
+                    </td>
 
-            {{/each}}
+                </tr>
 
-        </tbody>
+                {{/each}}
 
-    </table>
+            </tbody>
+
+        </table>
+
+    </div>
 
 </main>

@@ -5,11 +5,15 @@
     <nav class="abas">
 
         <a href="/eletrodomesticos">
+
             Equipamentos
+
         </a>
 
         <a href="/equipamentos-ocultos" class="ativa">
+
             Equipamentos Ocultos
+
         </a>
 
     </nav>
@@ -23,65 +27,71 @@
         <h2>Equipamentos Ocultados</h2>
 
         <p>
+
             Aqui estão os equipamentos que você decidiu ocultar da lista principal.
+
         </p>
 
     </section>
 
-    <table>
+    <div class="tabela-container">
 
-        <thead>
+        <table>
 
-            <tr>
+            <thead>
 
-                <th>Equipamento</th>
+                <tr>
 
-                <th>Categoria</th>
+                    <th>Equipamento</th>
 
-                <th>Energia</th>
+                    <th>Categoria</th>
 
-                <th>Água</th>
+                    <th>Energia</th>
 
-                <th>Ação</th>
+                    <th>Água</th>
 
-            </tr>
+                    <th>Ação</th>
 
-        </thead>
+                </tr>
 
-        <tbody>
+            </thead>
 
-            {{#each equipamentos}}
+            <tbody>
 
-            <tr>
+                {{#each equipamentos}}
 
-                <td>{{nome}}</td>
+                <tr>
 
-                <td>{{categoria}}</td>
+                    <td>{{nome}}</td>
 
-                <td>{{consumoEnergia}} kWh/mês</td>
+                    <td>{{categoria}}</td>
 
-                <td>{{consumoAgua}} L/mês</td>
+                    <td>{{consumoEnergia}} kWh/mês</td>
 
-                <td>
+                    <td>{{consumoAgua}} L/mês</td>
 
-                    <form action="/restaurar/{{id}}" method="POST">
+                    <td>
 
-                        <button class="restaurar">
+                        <form action="/restaurar/{{id}}" method="POST">
 
-                            Restaurar
+                            <button class="restaurar">
 
-                        </button>
+                                Restaurar
 
-                    </form>
+                            </button>
 
-                </td>
+                        </form>
 
-            </tr>
+                    </td>
 
-            {{/each}}
+                </tr>
 
-        </tbody>
+                {{/each}}
 
-    </table>
+            </tbody>
+
+        </table>
+
+    </div>
 
 </main>
