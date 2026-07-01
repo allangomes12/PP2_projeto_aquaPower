@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Usuário | AquaPower</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logoCompleta">
+            <img src="/img/LogoFoto.png" alt="Logo">
+            <h1>
+                <span class="aqua">Aqua</span><span class="power">Power</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="paginaCadastro">
+        <div class="cardCadastro">
+            <h2>Cadastrar Usuário</h2>
+            <p>Preencha os dados abaixo para cadastrar um novo usuário.</p>
+
+            <form action="/usuarios/add" method="POST">
+                <label>Nome</label>
+                <input type="text" name="nome" placeholder="Digite seu nome" required>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Digite seu e-mail" required>
+                <label>Senha</label>
+                <input type="password" name="senha" placeholder="Digite sua senha" required>
+                <button type="submit">Cadastrar Usuário</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>

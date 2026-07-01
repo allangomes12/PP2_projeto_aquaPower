@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários | AquaPower</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="logoCompleta">
+        <img src="/img/LogoFoto.png" alt="Logo">
+        <h1>
+            <span class="aqua">Aqua</span><span class="power">Power</span>
+        </h1>
+    </div>
+</header>
+
+<div class="paginaCadastro">
+    <div class="cardUsuarios">
+        <h2>Usuários Cadastrados</h2>
+        <p>Gerencie todos os usuários cadastrados no AquaPower.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#each usuarios}}
+
+                <tr>
+                    <td>{{this.nome}}</td>
+                    <td>{{this.email}}</td>
+                    <td class="acoes">
+                        <a href="/usuarios/editar/{{this.id}}">
+                            <button class="btnEditar">Editar</button>
+                        </a>
+
+                        <form action="/usuarios/delete/{{this.id}}" method="POST">
+                            <button class="btnExcluir">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+
+                {{/each}}
+            </tbody>
+        </table>
+
+        <div class="botoesInferiores">
+            <a href="/usuarios/cadastrar">
+                <button>Novo Usuário</button>
+            </a>
+
+            <a href="/">
+                <button class="btnVoltar">Voltar</button>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

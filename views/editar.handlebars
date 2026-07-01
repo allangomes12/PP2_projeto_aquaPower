@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuário | AquaPower</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+<header>
+    <div class="logoCompleta">
+        <img src="/img/LogoFoto.png" alt="Logo">
+        <h1>
+            <span class="aqua">Aqua</span><span class="power">Power</span>
+        </h1>
+    </div>
+</header>
+
+<div class="paginaCadastro">
+    <div class="cardCadastro">
+
+        <h2>Editar Usuário</h2>
+        <p>Atualize os dados do usuário abaixo.</p>
+
+        <form action="/usuarios/update" method="POST">
+            <input type="hidden" name="id" value="{{usuario.id}}">
+            <label>Nome</label>
+            <input type="text" name="nome" value="{{usuario.nome}}" required>
+            <label>Email</label>
+            <input type="email" name="email" value="{{usuario.email}}" required>
+            <label>Senha</label>
+            <input type="password" name="senha" value="{{usuario.senha}}" required>
+            <button type="submit">Salvar Alterações</button>
+        </form>
+
+        <a href="/usuarios" class="voltar">← Voltar</a>
+    </div>
+</div>
+</body>
+</html>
