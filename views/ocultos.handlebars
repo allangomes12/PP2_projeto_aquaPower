@@ -1,97 +1,104 @@
 <header>
 
-    <h1>Aqua<span>Power</span></h1>
+<h1>Aqua<span>Power</span></h1>
 
-    <nav class="abas">
+<nav class="abas">
 
-        <a href="/eletrodomesticos">
+<a href="/eletrodomesticos">
+Equipamentos
+</a>
 
-            Equipamentos
+<a href="/equipamentos-ocultos" class="ativa">
+Equipamentos Ocultos
+</a>
 
-        </a>
-
-        <a href="/equipamentos-ocultos" class="ativa">
-
-            Equipamentos Ocultos
-
-        </a>
-
-    </nav>
+</nav>
 
 </header>
 
 <main>
 
-    <section class="titulo">
+<section class="titulo">
 
-        <h2>Equipamentos Ocultados</h2>
+<h2>Equipamentos Ocultos</h2>
 
-        <p>
+<p>
+Restaure equipamentos ocultados para que voltem à lista principal.
+</p>
 
-            Aqui estão os equipamentos que você decidiu ocultar da lista principal.
+</section>
 
-        </p>
+<div class="tabela-container">
 
-    </section>
+<table>
 
-    <div class="tabela-container">
+<thead>
 
-        <table>
+<tr>
 
-            <thead>
+<th>Equipamento</th>
+<th>Categoria</th>
+<th>Energia</th>
+<th>Água</th>
+<th>Ação</th>
 
-                <tr>
+</tr>
 
-                    <th>Equipamento</th>
+</thead>
 
-                    <th>Categoria</th>
+<tbody>
 
-                    <th>Energia</th>
+{{#each equipamentos}}
 
-                    <th>Água</th>
+<tr>
 
-                    <th>Ação</th>
+<td>{{nome}}</td>
 
-                </tr>
+<td>{{categoria}}</td>
 
-            </thead>
+<td>{{consumoEnergia}} kWh/mês</td>
 
-            <tbody>
+<td>{{consumoAgua}} L/mês</td>
 
-                {{#each equipamentos}}
+<td>
 
-                <tr>
+<form action="/restaurar/{{id}}" method="POST">
 
-                    <td>{{nome}}</td>
+<button
+type="submit"
+class="restaurar"
+>
 
-                    <td>{{categoria}}</td>
+Restaurar
 
-                    <td>{{consumoEnergia}} kWh/mês</td>
+</button>
 
-                    <td>{{consumoAgua}} L/mês</td>
+</form>
 
-                    <td>
+</td>
 
-                        <form action="/restaurar/{{id}}" method="POST">
+</tr>
 
-                            <button class="restaurar">
+{{/each}}
 
-                                Restaurar
+{{#unless equipamentos}}
 
-                            </button>
+<tr>
 
-                        </form>
+<td colspan="5">
 
-                    </td>
+Nenhum equipamento oculto.
 
-                </tr>
+</td>
 
-                {{/each}}
+</tr>
 
-            </tbody>
+{{/unless}}
 
-        </table>
+</tbody>
 
-    </div>
+</table>
+
+</div>
 
 </main>

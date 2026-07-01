@@ -1,97 +1,175 @@
 <header>
 
-    <h1>Aqua<span>Power</span></h1>
+<h1>Aqua<span>Power</span></h1>
 
-    <nav class="abas">
+<nav class="abas">
 
-        <a href="/eletrodomesticos" class="ativa">
+<a href="/eletrodomesticos" class="ativa">
+Equipamentos
+</a>
 
-            Equipamentos
+<a href="/equipamentos-ocultos">
+Equipamentos Ocultos
+</a>
 
-        </a>
-
-        <a href="/equipamentos-ocultos">
-
-            Equipamentos Ocultos
-
-        </a>
-
-    </nav>
+</nav>
 
 </header>
 
 <main>
 
-    <section class="titulo">
+<section class="titulo">
 
-        <h2>Equipamentos</h2>
+<h2>Equipamentos</h2>
 
-        <p>
+<p>
+Consulte, cadastre, edite e oculte equipamentos.
+</p>
 
-            Consulte o consumo médio de água e energia dos principais eletrodomésticos.
+</section>
 
-        </p>
+<section class="cadastro">
 
-    </section>
+<h3>{{#if equipamentoEditar}}Editar Equipamento{{else}}Novo Equipamento{{/if}}</h3>
 
-    <div class="tabela-container">
+<form action="{{#if equipamentoEditar}}/eletrodomesticos/editar/{{equipamentoEditar.id}}{{else}}/eletrodomesticos{{/if}}" method="POST">
 
-        <table>
+<input
+type="text"
+name="nome"
+placeholder="Nome do equipamento"
+value="{{equipamentoEditar.nome}}"
+required
+>
 
-            <thead>
+<select name="categoria" required>
 
-                <tr>
+<option value="">Selecione uma categoria</option>
 
-                    <th>Equipamento</th>
+<option value="Cozinha">Cozinha</option>
+<option value="Lavanderia">Lavanderia</option>
+<option value="Climatização">Climatização</option>
+<option value="Entretenimento">Entretenimento</option>
+<option value="Informática">Informática</option>
+<option value="Limpeza">Limpeza</option>
+<option value="Água">Água</option>
+<option value="Banheiro">Banheiro</option>
+<option value="Cuidados pessoais">Cuidados pessoais</option>
 
-                    <th>Categoria</th>
+</select>
 
-                    <th>Energia</th>
+<input
+type="number"
+step="0.01"
+name="consumoEnergia"
+placeholder="Energia (kWh/mês)"
+value="{{equipamentoEditar.consumoEnergia}}"
+required
+>
 
-                    <th>Água</th>
+<input
+type="number"
+step="0.01"
+name="consumoAgua"
+placeholder="Água (L/mês)"
+value="{{equipamentoEditar.consumoAgua}}"
+required
+>
 
-                    <th>Ação</th>
+<div class="acoes-form">
 
-                </tr>
+<button type="submit">
 
-            </thead>
+{{#if equipamentoEditar}}
+Salvar Alterações
+{{else}}
+Cadastrar
+{{/if}}
 
-            <tbody>
+</button>
 
-                {{#each equipamentos}}
+{{#if equipamentoEditar}}
 
-                <tr>
+<a href="/eletrodomesticos" class="cancelar">
+Cancelar
+</a>
 
-                    <td>{{nome}}</td>
+{{/if}}
 
-                    <td>{{categoria}}</td>
+</div>
 
-                    <td>{{consumoEnergia}} kWh/mês</td>
+</form>
 
-                    <td>{{consumoAgua}} L/mês</td>
+</section>
 
-                    <td>
+<div class="tabela-container">
 
-                        <form action="/ocultar/{{id}}" method="POST">
+<table>
 
-                            <button class="ocultar">
+<thead>
 
-                                Ocultar
+<tr>
 
-                            </button>
+<th>Equipamento</th>
+<th>Categoria</th>
+<th>Energia</th>
+<th>Água</th>
+<th>Ações</th>
 
-                        </form>
+</tr>
 
-                    </td>
+</thead>
 
-                </tr>
+<tbody>
 
-                {{/each}}
+{{#each equipamentos}}
 
-            </tbody>
+<tr>
 
-        </table>
+<td>{{nome}}</td>
+<td>{{categoria}}</td>
+<td>{{consumoEnergia}} kWh/mês</td>
+<td>{{consumoAgua}} L/mês</td>
 
-    </div>
+<td>
+
+<div class="acoes">
+
+<a
+href="/eletrodomesticos/editar/{{id}}"
+class="editar"
+>
+Editar
+</a>
+
+<form
+action="/ocultar/{{id}}"
+method="POST"
+>
+
+<button
+type="submit"
+class="ocultar"
+>
+
+Ocultar
+
+</button>
+
+</form>
+
+</div>
+
+</td>
+
+</tr>
+
+{{/each}}
+
+</tbody>
+
+</table>
+
+</div>
 
 </main>

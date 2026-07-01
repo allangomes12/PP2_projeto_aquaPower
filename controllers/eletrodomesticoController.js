@@ -1,159 +1,262 @@
-const Eletrodomestico = require("../models/eletrodomestico");
+const Eletrodomestico=require("../models/eletrodomestico");
 
-// ===============================
-// LISTAR EQUIPAMENTOS VISÍVEIS
-// ===============================
+//==============================
+//LISTAR
+//==============================
 
-async function listarEquipamentos(req, res) {
+async function listarEquipamentos(req,res){
 
-    try {
+try{
 
-        const equipamentos = await Eletrodomestico.findAll({
+const equipamentos=await Eletrodomestico.findAll({
 
-            where: {
-                visivel: true
-            },
+where:{
+visivel:true
+},
 
-            order: [
-                ["categoria", "ASC"],
-                ["nome", "ASC"]
-            ]
+order:[
+["categoria","ASC"],
+["nome","ASC"]
+]
 
-        });
+});
 
-        res.render("eletrodomesticos", {
+res.render("eletrodomesticos",{
 
-            equipamentos: equipamentos.map(e => e.get({ plain: true }))
+equipamentos:equipamentos.map(e=>e.get({plain:true})),
+equipamentoEditar:null
 
-        });
+});
 
-    } catch (erro) {
+}catch(erro){
 
-        console.error("Erro ao listar equipamentos:", erro);
+console.log(erro);
 
-        res.status(500).send("Erro ao carregar os equipamentos.");
-
-    }
-
-}
-
-
-// ===============================
-// OCULTAR EQUIPAMENTO
-// ===============================
-
-async function ocultarEquipamento(req, res) {
-
-    try {
-
-        await Eletrodomestico.update(
-
-            {
-                visivel: false
-            },
-
-            {
-                where: {
-                    id: req.params.id
-                }
-            }
-
-        );
-
-        res.redirect("/eletrodomesticos");
-
-    } catch (erro) {
-
-        console.error("Erro ao ocultar equipamento:", erro);
-
-        res.status(500).send("Erro ao ocultar equipamento.");
-
-    }
+res.status(500).send("Erro ao listar equipamentos.");
 
 }
 
+}
 
-// ===============================
-// LISTAR EQUIPAMENTOS OCULTOS
-// ===============================
+//==============================
+//ABRIR EDIÇÃO
+//==============================
 
-async function listarOcultos(req, res) {
+async function abrirEdicao(req,res){
 
-    try {
+try{
 
-        const equipamentos = await Eletrodomestico.findAll({
+const equipamentos=await Eletrodomestico.findAll({
 
-            where: {
-                visivel: false
-            },
+where:{
+visivel:true
+},
 
-            order: [
-                ["categoria", "ASC"],
-                ["nome", "ASC"]
-            ]
+order:[
+["categoria","ASC"],
+["nome","ASC"]
+]
 
-        });
+});
 
-        res.render("ocultos", {
+const equipamentoEditar=await Eletrodomestico.findByPk(
 
-            equipamentos: equipamentos.map(e => e.get({ plain: true }))
+req.params.id
 
-        });
+);
 
-    } catch (erro) {
+res.render("eletrodomesticos",{
 
-        console.error("Erro ao listar ocultos:", erro);
+equipamentos:equipamentos.map(e=>e.get({plain:true})),
 
-        res.status(500).send("Erro ao carregar equipamentos ocultos.");
+equipamentoEditar:equipamentoEditar.get({plain:true})
 
-    }
+});
+
+}catch(erro){
+
+console.log(erro);
+
+res.status(500).send("Erro ao abrir edição.");
 
 }
 
+}
 
-// ===============================
-// RESTAURAR EQUIPAMENTO
-// ===============================
+//==============================
+//CADASTRAR
+//==============================
 
-async function restaurarEquipamento(req, res) {
+async function cadastrarEquipamento(req,res){
 
-    try {
+try{
 
-        await Eletrodomestico.update(
+await Eletrodomestico.create({
 
-            {
-                visivel: true
-            },
+nome:req.body.nome,
+categoria:req.body.categoria,
+consumoEnergia:req.body.consumoEnergia,
+consumoAgua:req.body.consumoAgua,
+visivel:true
 
-            {
-                where: {
-                    id: req.params.id
-                }
-            }
+});
 
-        );
+res.redirect("/eletrodomesticos");
 
-        res.redirect("/equipamentos-ocultos");
+}catch(erro){
 
-    } catch (erro) {
+console.log(erro);
 
-        console.error("Erro ao restaurar equipamento:", erro);
-
-        res.status(500).send("Erro ao restaurar equipamento.");
-
-    }
+res.status(500).send("Erro ao cadastrar.");
 
 }
 
+}
 
-module.exports = {
+//==============================
+//EDITAR
+//==============================
 
-    listarEquipamentos,
+async function editarEquipamento(req,res){
 
-    ocultarEquipamento,
+try{
 
-    listarOcultos,
+await Eletrodomestico.update({
 
-    restaurarEquipamento
+nome:req.body.nome,
+categoria:req.body.categoria,
+consumoEnergia:req.body.consumoEnergia,
+consumoAgua:req.body.consumoAgua
+
+},{
+
+where:{
+id:req.params.id
+}
+
+});
+
+res.redirect("/eletrodomesticos");
+
+}catch(erro){
+
+console.log(erro);
+
+res.status(500).send("Erro ao editar.");
+
+}
+
+}
+
+//==============================
+//OCULTAR
+//==============================
+
+async function ocultarEquipamento(req,res){
+
+try{
+
+await Eletrodomestico.update({
+
+visivel:false
+
+},{
+
+where:{
+id:req.params.id
+}
+
+});
+
+res.redirect("/eletrodomesticos");
+
+}catch(erro){
+
+console.log(erro);
+
+res.status(500).send("Erro ao ocultar.");
+
+}
+
+}
+
+//==============================
+//LISTAR OCULTOS
+//==============================
+
+async function listarOcultos(req,res){
+
+try{
+
+const equipamentos=await Eletrodomestico.findAll({
+
+where:{
+visivel:false
+},
+
+order:[
+["categoria","ASC"],
+["nome","ASC"]
+]
+
+});
+
+res.render("ocultos",{
+
+equipamentos:equipamentos.map(e=>e.get({plain:true}))
+
+});
+
+}catch(erro){
+
+console.log(erro);
+
+res.status(500).send("Erro ao listar ocultos.");
+
+}
+
+}
+
+//==============================
+//RESTAURAR
+//==============================
+
+async function restaurarEquipamento(req,res){
+
+try{
+
+await Eletrodomestico.update({
+
+visivel:true
+
+},{
+
+where:{
+id:req.params.id
+}
+
+});
+
+res.redirect("/equipamentos-ocultos");
+
+}catch(erro){
+
+console.log(erro);
+
+res.status(500).send("Erro ao restaurar.");
+
+}
+
+}
+
+module.exports={
+
+listarEquipamentos,
+abrirEdicao,
+cadastrarEquipamento,
+editarEquipamento,
+ocultarEquipamento,
+listarOcultos,
+restaurarEquipamento
 
 };

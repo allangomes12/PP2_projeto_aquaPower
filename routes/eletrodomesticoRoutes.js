@@ -1,27 +1,66 @@
-const express = require("express");
+const express=require("express");
 
-const router = express.Router();
+const router=express.Router();
 
-const controller = require("../controllers/eletrodomesticoController");
+const controller=require("../controllers/eletrodomesticoController");
+
+
+//READ
+
 
 router.get(
-    "/eletrodomesticos",
-    controller.listarEquipamentos
+"/eletrodomesticos",
+controller.listarEquipamentos
+);
+
+
+//CREATE
+
+
+router.post(
+"/eletrodomesticos",
+controller.cadastrarEquipamento
+);
+
+
+//UPDATE
+
+
+router.get(
+"/eletrodomesticos/editar/:id",
+controller.abrirEdicao
 );
 
 router.post(
-    "/ocultar/:id",
-    controller.ocultarEquipamento
+"/eletrodomesticos/editar/:id",
+controller.editarEquipamento
 );
 
-router.get(
-    "/equipamentos-ocultos",
-    controller.listarOcultos
-);
+
+//DELETE
+
 
 router.post(
-    "/restaurar/:id",
-    controller.restaurarEquipamento
+"/ocultar/:id",
+controller.ocultarEquipamento
 );
 
-module.exports = router;
+
+//OCULTOS
+
+
+router.get(
+"/equipamentos-ocultos",
+controller.listarOcultos
+);
+
+
+//RESTAURAR
+
+
+router.post(
+"/restaurar/:id",
+controller.restaurarEquipamento
+);
+
+module.exports=router;
