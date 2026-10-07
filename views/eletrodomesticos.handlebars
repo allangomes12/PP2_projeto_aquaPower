@@ -1,123 +1,89 @@
-<header>
+<div class="pagina-tabela">
 
-<h1>Aqua<span>Power</span></h1>
-
-<nav class="abas">
-
-<a href="/eletrodomesticos" class="ativa">
-Equipamentos
-</a>
-
-<a href="/equipamentos-ocultos">
-Equipamentos Ocultos
-</a>
-
-</nav>
-
-</header>
-
-<main>
+{{> abas ativoEquipamentos=true}}
 
 <section class="titulo">
-
-<h2>Equipamentos</h2>
-
-<p>
-Consulte, cadastre, edite e oculte equipamentos.
-</p>
-
+    <h1>Equipamentos</h1>
+    <p>Consulte, cadastre, edite e oculte equipamentos.</p>
 </section>
 
-<section class="cadastro">
+<section class="cadastro" aria-labelledby="titulo-form">
 
-<h3>{{#if equipamentoEditar}}Editar Equipamento{{else}}Novo Equipamento{{/if}}</h3>
+<h2 id="titulo-form">{{#if equipamentoEditar}}Editar Equipamento{{else}}Novo Equipamento{{/if}}</h2>
 
 <form action="{{#if equipamentoEditar}}/eletrodomesticos/editar/{{equipamentoEditar.id}}{{else}}/eletrodomesticos{{/if}}" method="POST">
 
-<input
-type="text"
-name="nome"
-placeholder="Nome do equipamento"
-value="{{equipamentoEditar.nome}}"
-required
->
+    <div class="campo-cadastro">
+        <label for="nome">Nome do equipamento</label>
+        <input type="text" id="nome" name="nome" value="{{equipamentoEditar.nome}}"
+               minlength="2" maxlength="100" autocomplete="off"
+               aria-describedby="dica-nome" required>
+        <small id="dica-nome" class="dica">Obrigatório. Ex.: Geladeira.</small>
+    </div>
 
-<select name="categoria" required>
+    <div class="campo-cadastro">
+        <label for="categoria">Categoria</label>
+        <select id="categoria" name="categoria" aria-describedby="dica-categoria" required>
+            <option value="">Selecione uma categoria</option>
+            <option value="Cozinha" {{#if (eq equipamentoEditar.categoria "Cozinha")}}selected{{/if}}>Cozinha</option>
+            <option value="Lavanderia" {{#if (eq equipamentoEditar.categoria "Lavanderia")}}selected{{/if}}>Lavanderia</option>
+            <option value="Climatização" {{#if (eq equipamentoEditar.categoria "Climatização")}}selected{{/if}}>Climatização</option>
+            <option value="Entretenimento" {{#if (eq equipamentoEditar.categoria "Entretenimento")}}selected{{/if}}>Entretenimento</option>
+            <option value="Informática" {{#if (eq equipamentoEditar.categoria "Informática")}}selected{{/if}}>Informática</option>
+            <option value="Limpeza" {{#if (eq equipamentoEditar.categoria "Limpeza")}}selected{{/if}}>Limpeza</option>
+            <option value="Água" {{#if (eq equipamentoEditar.categoria "Água")}}selected{{/if}}>Água</option>
+            <option value="Banheiro" {{#if (eq equipamentoEditar.categoria "Banheiro")}}selected{{/if}}>Banheiro</option>
+            <option value="Cuidados pessoais" {{#if (eq equipamentoEditar.categoria "Cuidados pessoais")}}selected{{/if}}>Cuidados pessoais</option>
+        </select>
+        <small id="dica-categoria" class="dica">Obrigatório. Escolha uma opção da lista.</small>
+    </div>
 
-<option value="">Selecione uma categoria</option>
+    <div class="campo-cadastro">
+        <label for="consumoEnergia">Energia (kWh/mês)</label>
+        <input type="number" id="consumoEnergia" name="consumoEnergia" value="{{equipamentoEditar.consumoEnergia}}"
+               step="0.01" min="0" inputmode="decimal"
+               aria-describedby="dica-energia" required>
+        <small id="dica-energia" class="dica">Obrigatório. Número maior ou igual a 0.</small>
+    </div>
 
-<option value="Cozinha">Cozinha</option>
-<option value="Lavanderia">Lavanderia</option>
-<option value="Climatização">Climatização</option>
-<option value="Entretenimento">Entretenimento</option>
-<option value="Informática">Informática</option>
-<option value="Limpeza">Limpeza</option>
-<option value="Água">Água</option>
-<option value="Banheiro">Banheiro</option>
-<option value="Cuidados pessoais">Cuidados pessoais</option>
+    <div class="campo-cadastro">
+        <label for="consumoAgua">Água (L/mês)</label>
+        <input type="number" id="consumoAgua" name="consumoAgua" value="{{equipamentoEditar.consumoAgua}}"
+               step="0.01" min="0" inputmode="decimal"
+               aria-describedby="dica-agua" required>
+        <small id="dica-agua" class="dica">Obrigatório. Número maior ou igual a 0 (use 0 se não consome água).</small>
+    </div>
 
-</select>
+    <div class="acoes-form">
+        <button type="submit">
+            {{#if equipamentoEditar}}Salvar Alterações{{else}}Cadastrar{{/if}}
+        </button>
 
-<input
-type="number"
-step="0.01"
-name="consumoEnergia"
-placeholder="Energia (kWh/mês)"
-value="{{equipamentoEditar.consumoEnergia}}"
-required
->
-
-<input
-type="number"
-step="0.01"
-name="consumoAgua"
-placeholder="Água (L/mês)"
-value="{{equipamentoEditar.consumoAgua}}"
-required
->
-
-<div class="acoes-form">
-
-<button type="submit">
-
-{{#if equipamentoEditar}}
-Salvar Alterações
-{{else}}
-Cadastrar
-{{/if}}
-
-</button>
-
-{{#if equipamentoEditar}}
-
-<a href="/eletrodomesticos" class="cancelar">
-Cancelar
-</a>
-
-{{/if}}
-
-</div>
+        {{#if equipamentoEditar}}
+        <a href="/eletrodomesticos" class="cancelar">Cancelar</a>
+        {{/if}}
+    </div>
 
 </form>
 
 </section>
 
-<div class="tabela-container">
+<div class="tabela-container" role="region" aria-labelledby="legenda-tabela" tabindex="0">
 
 <table>
 
+<caption id="legenda-tabela" class="sr-only">
+    Lista de equipamentos cadastrados, com categoria, consumo mensal de energia e água, e ações de editar e ocultar.
+</caption>
+
 <thead>
-
 <tr>
-
-<th>Equipamento</th>
-<th>Categoria</th>
-<th>Energia</th>
-<th>Água</th>
-<th>Ações</th>
-
+    <th scope="col">Equipamento</th>
+    <th scope="col">Categoria</th>
+    <th scope="col">Energia</th>
+    <th scope="col">Água</th>
+    <th scope="col">Ações</th>
 </tr>
-
 </thead>
 
 <tbody>
@@ -125,43 +91,26 @@ Cancelar
 {{#each equipamentos}}
 
 <tr>
+    <th scope="row" class="nome-linha">{{nome}}</th>
+    <td>{{categoria}}</td>
+    <td>{{consumoEnergia}} kWh/mês</td>
+    <td>{{consumoAgua}} L/mês</td>
 
-<td>{{nome}}</td>
-<td>{{categoria}}</td>
-<td>{{consumoEnergia}} kWh/mês</td>
-<td>{{consumoAgua}} L/mês</td>
+    <td>
+        <div class="acoes">
 
-<td>
+            <a href="/eletrodomesticos/editar/{{id}}" class="editar" aria-label="Editar {{nome}}">
+                Editar
+            </a>
 
-<div class="acoes">
+            <form action="/ocultar/{{id}}" method="POST">
+                <button type="submit" class="ocultar" aria-label="Ocultar {{nome}}">
+                    Ocultar
+                </button>
+            </form>
 
-<a
-href="/eletrodomesticos/editar/{{id}}"
-class="editar"
->
-Editar
-</a>
-
-<form
-action="/ocultar/{{id}}"
-method="POST"
->
-
-<button
-type="submit"
-class="ocultar"
->
-
-Ocultar
-
-</button>
-
-</form>
-
-</div>
-
-</td>
-
+        </div>
+    </td>
 </tr>
 
 {{/each}}
@@ -172,4 +121,8 @@ Ocultar
 
 </div>
 
-</main>
+<p class="aviso-reversivel">
+    Equipamentos ocultados não são excluídos: você pode restaurá-los na aba “Equipamentos Ocultos”.
+</p>
+
+</div>

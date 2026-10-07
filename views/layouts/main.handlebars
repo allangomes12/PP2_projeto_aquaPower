@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaPower</title>
+    <title>{{#if title}}{{title}} | AquaPower{{else}}AquaPower{{/if}}</title>
 
     <!-- Font Awesome -->
     <link
@@ -25,15 +25,17 @@
 
 <body>
 
+    <a href="#conteudo" class="pular-conteudo">Pular para o conteúdo principal</a>
+
     <header class="header">
 
         <div class="header-container">
 
             <!-- LOGO -->
 
-            <a href="/" class="logo">
+            <a href="/" class="logo" aria-label="AquaPower - página inicial">
 
-                <div class="logo-icone">
+                <div class="logo-icone" aria-hidden="true">
 
                     <i class="fa-solid fa-droplet logo-agua"></i>
 
@@ -51,27 +53,27 @@
 
             <!-- MENU -->
 
-            <nav class="menu">
+            <nav class="menu" aria-label="Navegação principal">
 
-                <a href="/" class="menu-item ativo">
+                <a href="/" class="menu-item{{#if (eq pagina "inicio")}} ativo{{/if}}" {{#if (eq pagina "inicio")}}aria-current="page"{{/if}}>
 
-                    <i class="fa-solid fa-house"></i>
+                    <i class="fa-solid fa-house" aria-hidden="true"></i>
 
                     <span>Início</span>
 
                 </a>
 
-                <a href="/equipamentos" class="menu-item">
+                <a href="/eletrodomesticos" class="menu-item{{#if (eq pagina "equipamentos")}} ativo{{/if}}" {{#if (eq pagina "equipamentos")}}aria-current="page"{{/if}}>
 
-                    <i class="fa-regular fa-square"></i>
+                    <i class="fa-regular fa-square" aria-hidden="true"></i>
 
                     <span>Equipamentos</span>
 
                 </a>
 
-                <a href="/consumos" class="menu-item">
+                <a href="/consumos" class="menu-item{{#if (eq pagina "consumos")}} ativo{{/if}}" {{#if (eq pagina "consumos")}}aria-current="page"{{/if}}>
 
-                    <i class="fa-regular fa-clock"></i>
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
 
                     <span>Consumos</span>
 
@@ -79,7 +81,7 @@
 
                 <a href="#" class="menu-item">
 
-                    <i class="fa-solid fa-circle-info"></i>
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
 
                     <span>Sobre</span>
 
@@ -91,7 +93,11 @@
 
     </header>
 
-    {{{body}}}
+    <main id="conteudo" tabindex="-1">
+
+        {{{body}}}
+
+    </main>
 
 </body>
 

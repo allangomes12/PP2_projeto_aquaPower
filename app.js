@@ -7,8 +7,6 @@ const Sequelize = require("./config/bd")
 
 const Consumo = require("./models/Consumo")
 const Eletrodomestico = require("./models/eletrodomestico")
-const Equipamento = require("./models/equipamento")
-const UsuarioEquipamento = require("./models/usuarioEquipamento")
 
 const app = express()
 const port = 3000
@@ -53,7 +51,58 @@ app.engine("handlebars", exphbs.engine({
 }))
 
 app.set("view engine", "handlebars")
-app.set("views", "./views")
+app.set("views", path.join(__dirname, "views"))
+
+
+// ==========================================
+// VALIDAÇÕES
+// ==========================================
+
+const TIPOS_CONSUMO = ["Água", "Energia"]
+
+const MENSAGENS_VALIDAS = ["cadastrado", "editado", "excluido"]
+
+const CATEGORIAS = [
+    "Cozinha",
+    "Lavanderia",
+    "Climatização",
+    "Entretenimento",
+    "Informática",
+    "Limpeza",
+    "Água",
+    "Banheiro",
+    "Cuidados pessoais"
+]
+
+function numeroValido(valor) {
+
+    return valor !== undefined
+        && valor !== ""
+        && Number.isFinite(Number(valor))
+        && Number(valor) >= 0
+
+}
+
+function consumoValido({ tipo, data, valor }) {
+
+    return TIPOS_CONSUMO.includes(tipo)
+        && /^\d{4}-\d{2}-\d{2}$/.test(data || "")
+        && numeroValido(valor)
+
+}
+
+function equipamentoValido(corpo) {
+
+    const nome = typeof corpo.nome === "string" ? corpo.nome.trim() : ""
+
+    return nome.length >= 2
+        && nome.length <= 100
+        && CATEGORIAS.includes(corpo.categoria)
+        && numeroValido(corpo.consumoEnergia)
+        && numeroValido(corpo.consumoAgua)
+
+}
+
 
 
 // ==========================================
@@ -91,13 +140,19 @@ app.get("/", async (req, res) => {
 
         res.render("home", {
 
+            title: "Início",
+
+            pagina: "inicio",
+
             consumos: consumos,
 
             totalAgua: totalAgua,
 
             totalEnergia: totalEnergia,
 
-            mensagem: req.query.mensagem
+            mensagem: MENSAGENS_VALIDAS.includes(req.query.mensagem)
+                ? req.query.mensagem
+                : null
 
         })
 
@@ -105,9 +160,20 @@ app.get("/", async (req, res) => {
 
         console.log("Erro ao buscar consumos:", erro)
 
-        res.send("Erro ao carregar a página")
+        res.status(500).send("Erro ao carregar a página")
 
     }
+
+})
+
+
+// ==========================================
+// /consumos (a lista de consumos fica na home)
+// ==========================================
+
+app.get("/consumos", (req, res) => {
+
+    res.redirect("/")
 
 })
 
@@ -118,7 +184,10 @@ app.get("/", async (req, res) => {
 
 app.get("/consumos/cadastrar", (req, res) => {
 
-    res.render("consumo/cadastrar")
+    res.render("consumo/cadastrar", {
+        title: "Novo consumo",
+        pagina: "consumos"
+    })
 
 })
 
@@ -132,6 +201,12 @@ app.post("/consumos/add", async (req, res) => {
     try {
 
         const { tipo, data, valor } = req.body
+
+        if (!consumoValido({ tipo, data, valor })) {
+
+            return res.status(400).send("Dados inválidos")
+
+        }
 
         await Consumo.create({
 
@@ -149,7 +224,7 @@ app.post("/consumos/add", async (req, res) => {
 
         console.log("Erro ao cadastrar consumo:", erro)
 
-        res.send("Erro ao cadastrar consumo")
+        res.status(500).send("Erro ao cadastrar consumo")
 
     }
 
@@ -172,11 +247,13 @@ app.get("/consumos/editar/:id", async (req, res) => {
 
         if (!consumo) {
 
-            return res.send("Consumo não encontrado")
+            return res.status(404).send("Consumo não encontrado")
 
         }
 
         res.render("consumo/editar", {
+            title: "Editar consumo",
+            pagina: "consumos",
             consumo: consumo
         })
 
@@ -184,7 +261,7 @@ app.get("/consumos/editar/:id", async (req, res) => {
 
         console.log("Erro ao buscar consumo:", erro)
 
-        res.send("Erro ao buscar consumo")
+        res.status(500).send("Erro ao buscar consumo")
 
     }
 
@@ -203,11 +280,17 @@ app.post("/consumos/editar/:id", async (req, res) => {
 
         const { tipo, data, valor } = req.body
 
+        if (!consumoValido({ tipo, data, valor })) {
+
+            return res.status(400).send("Dados inválidos")
+
+        }
+
         const consumo = await Consumo.findByPk(id)
 
         if (!consumo) {
 
-            return res.send("Consumo não encontrado")
+            return res.status(404).send("Consumo não encontrado")
 
         }
 
@@ -225,7 +308,7 @@ app.post("/consumos/editar/:id", async (req, res) => {
 
         console.log("Erro ao editar consumo:", erro)
 
-        res.send("Erro ao editar consumo")
+        res.status(500).send("Erro ao editar consumo")
 
     }
 
@@ -246,7 +329,7 @@ app.post("/consumos/excluir/:id", async (req, res) => {
 
         if (!consumo) {
 
-            return res.send("Consumo não encontrado")
+            return res.status(404).send("Consumo não encontrado")
 
         }
 
@@ -258,7 +341,7 @@ app.post("/consumos/excluir/:id", async (req, res) => {
 
         console.log("Erro ao excluir consumo:", erro)
 
-        res.send("Erro ao excluir consumo")
+        res.status(500).send("Erro ao excluir consumo")
 
     }
 
@@ -367,6 +450,10 @@ app.get("/eletrodomesticos", async (req, res) => {
 
         res.render("eletrodomesticos", {
 
+            title: "Equipamentos",
+
+            pagina: "equipamentos",
+
             equipamentos: equipamentos.map(e => e.get({ plain: true })),
 
             equipamentoEditar: null
@@ -392,9 +479,15 @@ app.post("/eletrodomesticos", async (req, res) => {
 
     try {
 
+        if (!equipamentoValido(req.body)) {
+
+            return res.status(400).send("Dados inválidos")
+
+        }
+
         await Eletrodomestico.create({
 
-            nome: req.body.nome,
+            nome: req.body.nome.trim(),
 
             categoria: req.body.categoria,
 
@@ -444,7 +537,17 @@ app.get("/eletrodomesticos/editar/:id", async (req, res) => {
             req.params.id
         )
 
+        if (!equipamentoEditar) {
+
+            return res.status(404).send("Equipamento não encontrado.")
+
+        }
+
         res.render("eletrodomesticos", {
+
+            title: "Editar equipamento",
+
+            pagina: "equipamentos",
 
             equipamentos: equipamentos.map(e => e.get({ plain: true })),
 
@@ -471,9 +574,15 @@ app.post("/eletrodomesticos/editar/:id", async (req, res) => {
 
     try {
 
+        if (!equipamentoValido(req.body)) {
+
+            return res.status(400).send("Dados inválidos")
+
+        }
+
         await Eletrodomestico.update({
 
-            nome: req.body.nome,
+            nome: req.body.nome.trim(),
 
             categoria: req.body.categoria,
 
@@ -558,6 +667,10 @@ app.get("/equipamentos-ocultos", async (req, res) => {
 
         res.render("ocultos", {
 
+            title: "Equipamentos ocultos",
+
+            pagina: "equipamentos",
+
             equipamentos: equipamentos.map(e => e.get({ plain: true }))
 
         })
@@ -607,87 +720,12 @@ app.post("/restaurar/:id", async (req, res) => {
 
 
 // ==========================================
-// EQUIPAMENTOS DO USUÁRIO
+// /equipamentos (antiga página por usuário)
 // ==========================================
 
-app.get("/equipamentos", async (req, res) => {
+app.get("/equipamentos", (req, res) => {
 
-    try {
-
-        const usuario = 1
-
-        const equipamentos = await Equipamento.findAll({
-
-            include: [
-
-                {
-
-                    model: UsuarioEquipamento,
-
-                    where: {
-                        usuario_id: usuario
-                    },
-
-                    required: false
-
-                }
-
-            ]
-
-        })
-
-        res.render("equipamentos", {
-
-            equipamentos
-
-        })
-
-    } catch (erro) {
-
-        console.log(erro)
-
-        res.status(500).send("Erro ao listar equipamentos.")
-
-    }
-
-})
-
-
-app.put("/equipamentos/:id/visibilidade", async (req, res) => {
-
-    try {
-
-        await UsuarioEquipamento.update(
-
-            {
-
-                visivel: req.body.visivel
-
-            },
-
-            {
-
-                where: {
-
-                    equipamento_id: req.params.id,
-
-                    usuario_id: 1
-
-                }
-
-            }
-
-        )
-
-        res.redirect("/equipamentos")
-
-    } catch (erro) {
-
-        console.log(erro)
-
-        res.status(500).send("Erro ao alterar visibilidade.")
-
-    }
+    res.redirect("/eletrodomesticos")
 
 })
 
@@ -714,7 +752,9 @@ async function iniciar() {
 
     } catch (erro) {
 
-        console.log(erro)
+        console.log("Erro ao preparar o banco de dados:")
+
+        throw erro
 
     }
 
@@ -735,4 +775,3 @@ iniciar().then(() => {
     console.log(erro)
 
 })
-

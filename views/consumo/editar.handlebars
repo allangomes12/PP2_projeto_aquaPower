@@ -4,7 +4,7 @@
 
         <div class="formulario-titulo">
 
-            <div class="formulario-icone">
+            <div class="formulario-icone" aria-hidden="true">
 
                 <i class="fa-solid fa-pen-to-square"></i>
 
@@ -23,47 +23,23 @@
         </div>
 
 
-        <form
-            action="/consumos/editar/{{consumo.id}}"
-            method="POST"
-            class="formulario"
-        >
-
+        <form action="/consumos/editar/{{consumo.id}}" method="POST" class="formulario">
 
             <!-- TIPO -->
 
             <div class="campo">
 
-                <label for="tipo">
-                    Tipo de consumo
-                </label>
+                <label for="tipo">Tipo de consumo</label>
 
-                <select
-                    name="tipo"
-                    id="tipo"
-                    required
-                >
+                <select name="tipo" id="tipo" aria-describedby="dica-tipo" required>
 
-                    <option
-                        value="Água"
-                        {{#if (eq consumo.tipo "Água")}}
-                            selected
-                        {{/if}}
-                    >
-                        💧 Água
-                    </option>
+                    <option value="Água" {{#if (eq consumo.tipo "Água")}}selected{{/if}}>Água</option>
 
-
-                    <option
-                        value="Energia"
-                        {{#if (eq consumo.tipo "Energia")}}
-                            selected
-                        {{/if}}
-                    >
-                        ⚡ Energia
-                    </option>
+                    <option value="Energia" {{#if (eq consumo.tipo "Energia")}}selected{{/if}}>Energia</option>
 
                 </select>
+
+                <small id="dica-tipo" class="dica">Obrigatório. Escolha Água ou Energia.</small>
 
             </div>
 
@@ -72,17 +48,11 @@
 
             <div class="campo">
 
-                <label for="data">
-                    Data do consumo
-                </label>
+                <label for="data">Data do consumo</label>
 
-                <input
-                    type="date"
-                    name="data"
-                    id="data"
-                    value="{{consumo.data}}"
-                    required
-                >
+                <input type="date" name="data" id="data" value="{{consumo.data}}" aria-describedby="dica-data" required>
+
+                <small id="dica-data" class="dica">Obrigatório. Use o formato dia/mês/ano.</small>
 
             </div>
 
@@ -91,13 +61,11 @@
 
             <div class="campo">
 
-                <label for="valor">
-                    Valor do consumo
-                </label>
+                <label for="valor">Valor do consumo (R$)</label>
 
                 <div class="campo-valor">
 
-                    <span>R$</span>
+                    <span aria-hidden="true">R$</span>
 
                     <input
                         type="number"
@@ -106,10 +74,14 @@
                         value="{{consumo.valor}}"
                         min="0"
                         step="0.01"
+                        inputmode="decimal"
+                        aria-describedby="dica-valor"
                         required
                     >
 
                 </div>
+
+                <small id="dica-valor" class="dica">Obrigatório. Número maior ou igual a 0.</small>
 
             </div>
 
@@ -118,27 +90,17 @@
 
             <div class="formulario-acoes">
 
-                <a
-                    href="/"
-                    class="btn-cancelar"
-                >
-                    Cancelar
-                </a>
+                <a href="/" class="btn-cancelar">Cancelar</a>
 
+                <button type="submit" class="btn-salvar">
 
-                <button
-                    type="submit"
-                    class="btn-salvar"
-                >
-
-                    <i class="fa-solid fa-floppy-disk"></i>
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
 
                     Salvar alterações
 
                 </button>
 
             </div>
-
 
         </form>
 

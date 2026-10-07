@@ -1,28 +1,23 @@
-<main class="home">
+<div class="home">
+
     {{#if mensagem}}
 
-    <div class="alerta-central" id="alertaCentral">
+    <div class="alerta-central" id="alertaCentral" role="status">
+
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
 
         {{#if (eq mensagem "cadastrado")}}
-
-        <i class="fa-solid fa-circle-check"></i>
         <span>Consumo cadastrado</span>
-
         {{else if (eq mensagem "editado")}}
-
-        <i class="fa-solid fa-circle-check"></i>
         <span>Consumo editado</span>
-
         {{else if (eq mensagem "excluido")}}
-
-        <i class="fa-solid fa-circle-check"></i>
         <span>Consumo excluído</span>
-
         {{/if}}
 
     </div>
 
     {{/if}}
+
     <!-- ============================= -->
     <!-- HERO -->
     <!-- ============================= -->
@@ -45,121 +40,140 @@
     <!-- DASHBOARD -->
     <!-- ============================= -->
 
-    <section class="dashboard">
+    <div class="dashboard">
 
 
         <!-- ========================= -->
         <!-- GRÁFICO -->
         <!-- ========================= -->
 
-        <div class="card card-grafico">
+        <section class="card card-grafico" aria-labelledby="titulo-grafico">
 
             <div class="card-titulo">
 
-                <i class="fa-solid fa-chart-simple"></i>
+                <i class="fa-solid fa-chart-simple" aria-hidden="true"></i>
 
-                <h2>Consumo por Categoria</h2>
+                <h2 id="titulo-grafico">Consumo por Categoria</h2>
 
             </div>
-
 
             <div class="grafico-area">
 
-                <canvas id="graficoConsumo"></canvas>
+                <!-- O gráfico é visual; leitores de tela usam a tabela abaixo -->
+                <canvas id="graficoConsumo" aria-hidden="true"></canvas>
+
+                <table class="sr-only">
+                    <caption>Total de consumo por categoria, em reais</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Água</th>
+                            <td>R$ {{totalAgua}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Energia</th>
+                            <td>R$ {{totalEnergia}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
 
-        </div>
+        </section>
 
 
         <!-- ========================= -->
         <!-- CONSUMOS RECENTES -->
         <!-- ========================= -->
 
-        <div class="card card-consumos">
+        <section class="card card-consumos" aria-labelledby="titulo-consumos">
 
             <div class="card-titulo">
 
-                <i class="fa-solid fa-clock-rotate-left"></i>
+                <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
 
-                <h2>Consumos Recentes</h2>
+                <h2 id="titulo-consumos">Consumos Recentes</h2>
 
             </div>
 
 
             <div class="lista-consumos">
 
-                {{#each consumos}}
+                {{#if consumos.length}}
 
-                <div class="consumo-item">
+                <ul class="lista-itens">
 
+                    {{#each consumos}}
 
-                    <!-- ÍCONE -->
+                    <li class="consumo-item">
 
-                    <div class="consumo-icone
-                        {{#if (eq tipo " Água")}} icone-agua {{else}} icone-energia {{/if}} ">
+                        <!-- ÍCONE -->
 
-                        {{#if (eq tipo " Água")}} <i class="fa-solid fa-droplet"></i>
+                        <div class="consumo-icone {{#if (eq tipo "Água")}}icone-agua{{else}}icone-energia{{/if}}" aria-hidden="true">
 
-                        {{else}}
+                            {{#if (eq tipo "Água")}}
+                            <i class="fa-solid fa-droplet"></i>
+                            {{else}}
+                            <i class="fa-solid fa-lightbulb"></i>
+                            {{/if}}
 
-                        <i class="fa-solid fa-lightbulb"></i>
+                        </div>
 
-                        {{/if}}
+                        <!-- INFORMAÇÕES -->
 
-                    </div>
+                        <div class="consumo-info">
 
+                            <strong>{{tipo}}</strong>
 
-                    <!-- INFORMAÇÕES -->
+                            <span>{{formatDate data}}</span>
 
-                    <div class="consumo-info">
+                        </div>
 
-                        <strong>{{tipo}}</strong>
+                        <!-- VALOR -->
 
-                        <span>{{formatDate data}}</span>
+                        <strong class="consumo-valor">
 
-                    </div>
+                            R$ {{valor}}
 
+                        </strong>
 
-                    <!-- VALOR -->
+                        <!-- AÇÕES -->
 
-                    <strong class="consumo-valor">
+                        <div class="consumo-acoes">
 
-                        R$ {{valor}}
+                            <a href="/consumos/editar/{{id}}" class="acao-editar"
+                               aria-label="Editar consumo de {{tipo}} de {{formatDate data}}">
+                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                            </a>
 
-                    </strong>
+                            <form action="/consumos/excluir/{{id}}" method="POST"
+                                  data-confirmar="Excluir o consumo de {{tipo}} de {{formatDate data}}? Esta ação não pode ser desfeita.">
 
+                                <button type="submit" class="acao-excluir"
+                                        aria-label="Excluir consumo de {{tipo}} de {{formatDate data}}">
+                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                                </button>
 
-                    <!-- AÇÕES -->
+                            </form>
 
-                    <div class="consumo-acoes">
+                        </div>
 
-                        <a href="/consumos/editar/{{id}}" class="acao-editar" title="Editar">
+                    </li>
 
-                            <i class="fa-solid fa-pen-to-square"></i>
+                    {{/each}}
 
-                        </a>
-
-
-                        <form action="/consumos/excluir/{{id}}" method="POST">
-
-                            <button type="submit" class="acao-excluir" title="Excluir">
-
-                                <i class="fa-solid fa-trash-can"></i>
-
-                            </button>
-
-                        </form>
-
-                    </div>
-
-                </div>
+                </ul>
 
                 {{else}}
 
                 <div class="sem-consumos">
 
-                    <i class="fa-solid fa-chart-column"></i>
+                    <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
 
                     <p>Nenhum consumo cadastrado.</p>
 
@@ -169,13 +183,13 @@
 
                 </div>
 
-                {{/each}}
+                {{/if}}
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
+    </div>
 
 
     <!-- ============================= -->
@@ -186,7 +200,7 @@
 
         <a href="/consumos/cadastrar" class="btn-novo-consumo">
 
-            <i class="fa-solid fa-plus"></i>
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
 
             Novo Consumo
 
@@ -194,250 +208,177 @@
 
     </div>
 
-</main>
+</div>
 
 
 <!-- CHART.JS -->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 <script>
 
     const ctx = document.getElementById("graficoConsumo");
 
-    new Chart(ctx, {
+    const reduzirMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        type: "bar",
+    if (ctx && typeof Chart !== "undefined") {
 
-        data: {
+        new Chart(ctx, {
 
-            labels: ["Água", "Energia"],
+            type: "bar",
 
-            datasets: [{
+            data: {
 
-                data: [
-                    {{ totalAgua }},
-            {{ totalEnergia }}
-                ],
+                labels: ["Água", "Energia"],
 
-        backgroundColor: [
-            "#1688f7",
-            "#ffbf00"
-        ],
+                datasets: [{
 
-        borderColor: [
-            "#1688f7",
-            "#ffbf00"
-        ],
+                    data: [
+                        {{ totalAgua }},
+                        {{ totalEnergia }}
+                    ],
 
-        borderWidth: 0,
+                    backgroundColor: ["#1688f7", "#ffbf00"],
 
-        barThickness: 105
+                    borderColor: ["#1688f7", "#ffbf00"],
 
-    }]
+                    borderWidth: 0,
 
-        },
+                    barThickness: 105
 
-        options: {
+                }]
 
-        responsive: true,
+            },
 
-        maintainAspectRatio: false,
+            options: {
 
-        layout: {
+                responsive: true,
 
-            padding: {
-                top: 30,
-                right: 15,
-                left: 10,
-                bottom: 5
-            }
+                maintainAspectRatio: false,
 
-        },
+                animation: reduzirMovimento ? false : undefined,
 
-        plugins: {
+                layout: {
+                    padding: { top: 30, right: 15, left: 10, bottom: 5 }
+                },
 
-            legend: {
+                plugins: {
 
-                display: false,
+                    legend: { display: false },
 
-                position: "bottom",
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return "R$" + context.raw;
+                            }
+                        }
+                    }
 
-                labels: {
+                },
 
-                    color: "#d1d5db",
+                scales: {
 
-                    boxWidth: 26,
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: "#d1d5db", font: { size: 14 } }
+                    },
 
-                    boxHeight: 12,
-
-                    padding: 20,
-
-                    font: {
-                        size: 14
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: "rgba(148, 163, 184, 0.12)" },
+                        ticks: { color: "#cbd5e1", stepSize: 20 },
+                        title: {
+                            display: true,
+                            text: "Valor (R$)",
+                            color: "#cbd5e1",
+                            font: { size: 14 }
+                        }
                     }
 
                 }
 
             },
 
-            tooltip: {
+            plugins: [
 
-                callbacks: {
+                {
 
-                    label: function (context) {
+                    id: "valoresEmCima",
 
-                        return "R$" + context.raw;
+                    afterDatasetsDraw(chart) {
+
+                        const { ctx } = chart;
+
+                        ctx.save();
+
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+
+                            const meta = chart.getDatasetMeta(datasetIndex);
+
+                            meta.data.forEach((bar, index) => {
+
+                                const valor = dataset.data[index];
+
+                                ctx.fillStyle = index === 0 ? "#1688f7" : "#ffbf00";
+
+                                ctx.font = "14px Arial";
+
+                                ctx.textAlign = "center";
+
+                                ctx.fillText("R$" + valor, bar.x, bar.y - 10);
+
+                            });
+
+                        });
+
+                        ctx.restore();
 
                     }
 
                 }
 
-            }
+            ]
 
-        },
+        });
 
-        scales: {
-
-            x: {
-
-                grid: {
-                    display: false
-                },
-
-                ticks: {
-
-                    color: "#d1d5db",
-
-                    font: {
-                        size: 14
-                    }
-
-                }
-
-            },
-
-            y: {
-
-                beginAtZero: true,
-
-                grid: {
-
-                    color: "rgba(148, 163, 184, 0.12)"
-
-                },
-
-                ticks: {
-
-                    color: "#cbd5e1",
-
-                    stepSize: 20,
-
-                    callback: function (value) {
-
-                        return value;
-
-                    }
-
-                },
-
-                title: {
-
-                    display: true,
-
-                    text: "Valor (R$)",
-
-                    color: "#cbd5e1",
-
-                    font: {
-                        size: 14
-                    }
-
-                }
-
-            }
-
-        }
-
-    },
-
-        plugins: [
-
-        {
-
-            id: "valoresEmCima",
-
-            afterDatasetsDraw(chart) {
-
-                const {
-
-                    ctx
-
-                } = chart;
-
-                ctx.save();
-
-                chart.data.datasets.forEach((dataset, datasetIndex) => {
-
-                    const meta = chart.getDatasetMeta(datasetIndex);
-
-                    meta.data.forEach((bar, index) => {
-
-                        const valor = dataset.data[index];
-
-                        ctx.fillStyle =
-                            index === 0
-                                ? "#1688f7"
-                                : "#ffbf00";
-
-                        ctx.font = "14px Arial";
-
-                        ctx.textAlign = "center";
-
-                        ctx.fillText(
-
-                            "R$" + valor,
-
-                            bar.x,
-
-                            bar.y - 10
-
-                        );
-
-                    });
-
-                });
-
-                ctx.restore();
-
-            }
-
-        }
-
-    ]
-
-    });
+    }
 
 </script>
+
 <script>
 
     const alerta = document.getElementById("alertaCentral");
 
     if (alerta) {
 
+        // 6 segundos para dar tempo de ler a mensagem
         setTimeout(() => {
 
             alerta.classList.add("saindo");
 
             setTimeout(() => {
-
                 alerta.remove();
-
             }, 400);
 
-        }, 2500);
+        }, 6000);
 
     }
+
+</script>
+
+<script>
+
+    // confirmação antes de excluir um consumo
+    document.querySelectorAll("form[data-confirmar]").forEach(form => {
+
+        form.addEventListener("submit", evento => {
+
+            if (!confirm(form.dataset.confirmar)) {
+                evento.preventDefault();
+            }
+
+        });
+
+    });
 
 </script>

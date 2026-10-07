@@ -1,60 +1,43 @@
-<h1>Meus equipamentos</h1>
+<div class="pagina-tabela">
 
+<section class="titulo">
+    <h1>Meus equipamentos</h1>
+</section>
+
+<div class="tabela-container" role="region" aria-labelledby="legenda-tabela" tabindex="0">
 
 <table>
 
+<caption id="legenda-tabela" class="sr-only">
+    Equipamentos do usuário, com consumo de energia e água e a ação de ocultar.
+</caption>
+
+<thead>
 <tr>
-
-<th>Equipamento</th>
-<th>Energia</th>
-<th>Água</th>
-<th>Ação</th>
-
+    <th scope="col">Equipamento</th>
+    <th scope="col">Energia</th>
+    <th scope="col">Água</th>
+    <th scope="col">Ação</th>
 </tr>
+</thead>
 
-
-
+<tbody>
 {{#each equipamentos}}
-
 <tr>
-
-<td>
-{{nome}}
-</td>
-
-
-<td>
-{{consumoEnergia}} kWh
-</td>
-
-
-<td>
-{{consumoAgua}} L
-</td>
-
-
-<td>
-
-
-<form method="POST">
-
-<button>
-
-Ocultar
-
-</button>
-
-
-</form>
-
-
-</td>
-
-
+    <th scope="row" class="nome-linha">{{nome}}</th>
+    <td>{{consumoEnergia}} kWh</td>
+    <td>{{consumoAgua}} L</td>
+    <td>
+        <form method="POST">
+            <button type="submit" class="ocultar" aria-label="Ocultar {{nome}}">Ocultar</button>
+        </form>
+    </td>
 </tr>
-
-
 {{/each}}
-
+</tbody>
 
 </table>
+
+</div>
+
+</div>

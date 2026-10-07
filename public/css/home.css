@@ -567,7 +567,7 @@ body {
 
     gap: 12px;
 
-    color: #64748b;
+    color: #94a3b8;
 
     text-align: center;
 }
@@ -614,7 +614,7 @@ body {
 
     border-radius: 6px;
 
-    background: #1688f7;
+    background: #0b63c9;
 
     color: white;
 
@@ -626,7 +626,7 @@ body {
 }
 
 .btn-novo-consumo:hover {
-    background: #0878e0;
+    background: #084b9c;
 
     transform: translateY(-1px);
 }
@@ -883,7 +883,7 @@ body {
 }
 
 .campo input::placeholder {
-    color: #526174;
+    color: #8a98aa;
 }
 
 .campo input:focus,
@@ -1006,7 +1006,7 @@ body {
 
     border-radius: 6px;
 
-    background: #1688f7;
+    background: #0b63c9;
 
     color: white;
 
@@ -1020,7 +1020,7 @@ body {
 }
 
 .btn-salvar:hover {
-    background: #0878e0;
+    background: #084b9c;
 
     transform: translateY(-1px);
 }
@@ -1087,7 +1087,7 @@ body {
 }
 
 .alerta-central i {
-    color: #22c55e;
+    color: #16a34a;
     font-size: 22px;
 }
 
@@ -1128,6 +1128,66 @@ body {
     to {
         opacity: 0;
         transform: translate(-50%, -55%);
+    }
+
+}
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+/* lista semântica de consumos */
+.lista-itens {
+    list-style: none;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+/* alvos de clique maiores nos ícones de editar/excluir */
+.consumo-acoes {
+    gap: 6px;
+}
+
+.acao-editar,
+.acao-excluir {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 8px;
+}
+
+.acao-editar:hover,
+.acao-excluir:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* em telas pequenas o texto do menu some só visualmente,
+   continua disponível para leitores de tela */
+@media (max-width: 700px) {
+
+    .menu-item span {
+        display: block;
+
+        position: absolute;
+
+        width: 1px;
+
+        height: 1px;
+
+        overflow: hidden;
+
+        clip: rect(0, 0, 0, 0);
+
+        white-space: nowrap;
     }
 
 }
