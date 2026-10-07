@@ -1,5 +1,6 @@
 const express = require("express")
 const exphbs = require("express-handlebars")
+
 const path = require("path")
 
 const Sequelize = require("./config/bd")
@@ -734,3 +735,4 @@ iniciar().then(() => {
     console.log(erro)
 
 })
+
