@@ -1,0 +1,60 @@
+<h1>Meus equipamentos</h1>
+
+
+<table>
+
+<tr>
+
+<th>Equipamento</th>
+<th>Energia</th>
+<th>Água</th>
+<th>Ação</th>
+
+</tr>
+
+
+
+{{#each equipamentos}}
+
+<tr>
+
+<td>
+{{nome}}
+</td>
+
+
+<td>
+{{consumoEnergia}} kWh
+</td>
+
+
+<td>
+{{consumoAgua}} L
+</td>
+
+
+<td>
+
+
+<form method="POST">
+
+<button>
+
+Ocultar
+
+</button>
+
+
+</form>
+
+
+</td>
+
+
+</tr>
+
+
+{{/each}}
+
+
+</table>

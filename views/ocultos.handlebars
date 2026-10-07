@@ -1,0 +1,104 @@
+<header>
+
+<h1>Aqua<span>Power</span></h1>
+
+<nav class="abas">
+
+<a href="/eletrodomesticos">
+Equipamentos
+</a>
+
+<a href="/equipamentos-ocultos" class="ativa">
+Equipamentos Ocultos
+</a>
+
+</nav>
+
+</header>
+
+<main>
+
+<section class="titulo">
+
+<h2>Equipamentos Ocultos</h2>
+
+<p>
+Restaure equipamentos ocultados para que voltem à lista principal.
+</p>
+
+</section>
+
+<div class="tabela-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Equipamento</th>
+<th>Categoria</th>
+<th>Energia</th>
+<th>Água</th>
+<th>Ação</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{{#each equipamentos}}
+
+<tr>
+
+<td>{{nome}}</td>
+
+<td>{{categoria}}</td>
+
+<td>{{consumoEnergia}} kWh/mês</td>
+
+<td>{{consumoAgua}} L/mês</td>
+
+<td>
+
+<form action="/restaurar/{{id}}" method="POST">
+
+<button
+type="submit"
+class="restaurar"
+>
+
+Restaurar
+
+</button>
+
+</form>
+
+</td>
+
+</tr>
+
+{{/each}}
+
+{{#unless equipamentos}}
+
+<tr>
+
+<td colspan="5">
+
+Nenhum equipamento oculto.
+
+</td>
+
+</tr>
+
+{{/unless}}
+
+</tbody>
+
+</table>
+
+</div>
+
+</main>

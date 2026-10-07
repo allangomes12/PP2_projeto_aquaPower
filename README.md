@@ -9,5 +9,5 @@ Seu principal objetivo é auxiliar os usuários no monitoramento de energia e á
 ## Integrantes
 
 - Geovana Gomes
-- Allan Poul 
+- Allan Poul
 - Bernardo Accioly
